@@ -8,9 +8,10 @@ topic = "hellotopic"
 message = "hello world"
 
 with xmlrpc.client.ServerProxy("http://localhost:8088/") as proxy:
-    print("write: %s" % str(proxy.LindaDistributed._out(topic, "hellomessage")))
-    print("read: %s" % str(proxy.LindaDistributed._rd(topic)))
-    print("take: %s" % str(proxy.LindaDistributed._in(topic)))
+    srv = proxy.LindaDistributed
+    print("write: %s" % str(srv._out(topic, "hellomessage")))
+    print("read: %s" % str(srv._rd(topic)))
+    print("take: %s" % str(srv._in(topic)))
 
 #import json
 
