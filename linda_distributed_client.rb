@@ -1,4 +1,4 @@
-# ruby linda_distributed_client.rb
+# clear;ruby linda_distributed_client.rb
 
 require "./LindaDistributed"
 

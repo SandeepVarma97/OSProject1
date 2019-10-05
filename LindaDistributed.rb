@@ -11,8 +11,8 @@ module LindaDistributed
         @OList = [:read, :write, :take]
         @@OperationLookup = { 
             @OList[0] => {:key => @OList[0], :tag => "_rd"},
-            @OList[1] => {:key => @OList[1], :tag => "_in"},
-            @OList[2] => {:key => @OList[2], :tag => "_out"} 
+            @OList[1] => {:key => @OList[1], :tag => "_out"},
+            @OList[2] => {:key => @OList[2], :tag => "_in"} 
         }
 
         #method = :read

@@ -1,4 +1,6 @@
 # clear;python3 xmlrpc_linda_client.py
+# clear;python xmlrpc_linda_client.py
+
 import xmlrpc.client
 
 xmlrpcUrl = "http://localhost:8088/"
