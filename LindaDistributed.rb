@@ -1,6 +1,7 @@
 
 require "rinda/tuplespace"
 require "rinda/rinda"
+require "./Message"
 
 module LindaDistributed
     class Common
@@ -14,9 +15,6 @@ module LindaDistributed
             @OList[1] => {:key => @OList[1], :tag => "_out"},
             @OList[2] => {:key => @OList[2], :tag => "_in"} 
         }
-
-        #method = :read
-        #puts @@ol[method][:tag]
 
         def self.Port
             @@Port
@@ -53,17 +51,18 @@ module LindaDistributed
             @ts = DRbObject.new(nil, url)
         end
 
-        def sendMessage(method, topic, message)
+        def sendMessage(method, topic, messageObject)
             
-            tuple = toTuple(method, topic, message)
+            tuple = toTuple(method, topic, messageObject)
 
             puts "method: #{method} tuple: #{tuple}"
 
             retVal = @ts.send(method, tuple)
         end
 
-        def toTuple(method, topic, message)
-            tuple = [topic, (method == :write ? message : nil)]
+        def toTuple(method, topic, messageObject)
+            tuple = (method == :write) ? [messageObject.topic, messageObject.poster, messageObject.messageText] : [topic, nil, nil]
         end
+
     end
 end

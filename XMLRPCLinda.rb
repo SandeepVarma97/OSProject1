@@ -60,35 +60,39 @@ module XMLRPCLinda
 
         def addHandlers()
             
-            @server.add_handler(Common.getFullyNamedMethod(:write)) do |topic, message|
-                executeLindaFunction(:write, topic, message)
+            @server.add_handler(Common.getFullyNamedMethod(:write)) do |topic, poster, message|
+                executeLindaFunction(:write, topic, poster, message)
             end
 
             @server.add_handler(Common.getFullyNamedMethod(:read)) do |topic|
-                message = nil
-                executeLindaFunction(:read, topic, message)
+                executeLindaFunction(:read, topic, nil, nil)
             end
             
             @server.add_handler(Common.getFullyNamedMethod(:take)) do |topic|
-                message = nil
-                executeLindaFunction(:take, topic, message)
+                executeLindaFunction(:take, topic, nil, nil)
             end
         end
 
-        def executeLindaFunction(method, topic, message)
+        def executeLindaFunction(method, topic, poster, message)
             begin
 
-                lindaVal = @lindaClient.sendMessage(method, topic, message)
+                messageObject = Message.new(topic, poster, message)
+                lindaVal = @lindaClient.sendMessage(method, topic, messageObject)
                 
-                # Cannot have nil values so we have to use a string version
-                # and convert this on the XML-RPC client that is receiving it.
-                message = "nil" if message == nil
+                messageObject = formatMessageObjectForSerialization(messageObject)
 
-                retVal = { "status" => true, "context" => {"method" => method.to_s, "topic" => topic, "message" => message}, "lindaVal": lindaVal.to_s }
+                retVal = { "status" => true, "context" => {"method" => method.to_s, "topic" => topic, "messageObject" => messageObject.to_s}, "lindaVal": lindaVal.to_s }
             rescue StandardError => e 
                 puts e.message  
                 puts e.backtrace.inspect 
             end
+        end
+        def formatMessageObjectForSerialization(messageObject)
+            # Cannot have nil values so we have to use a string version
+            # and convert this on the XML-RPC client that is receiving it.
+            messageObject.poster = "nil" if messageObject.poster == nil
+            messageObject.messageText = "nil" if messageObject.messageText == nil
+            messageObject
         end
     end
 
@@ -113,9 +117,18 @@ module XMLRPCLinda
         def sendMessage1(method, topic)
             @proxy.call(Common.getFullyNamedMethod(method), topic)
         end
-        def sendMessage2(method, topic, message)
-            @proxy.call(Common.getFullyNamedMethod(method), topic, message)
+        def sendMessage2(method, topic, messageObject)
+
+            messageObject = formatMessageObjectForSerialization(messageObject)
+            @proxy.call(Common.getFullyNamedMethod(method), topic, messageObject.poster, messageObject.messageText)
         end
 
+        def formatMessageObjectForSerialization(messageObject)
+            # Cannot have nil values so we have to use a string version
+            # and convert this on the XML-RPC client that is receiving it.
+            messageObject.poster = "nil" if messageObject.poster == nil
+            messageObject.messageText = "nil" if messageObject.messageText == nil
+            messageObject
+        end
     end
 end

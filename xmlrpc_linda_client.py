@@ -2,14 +2,18 @@
 # clear;python xmlrpc_linda_client.py
 
 import xmlrpc.client
+import MessageModule
 
 xmlrpcUrl = "http://localhost:8088/"
-topic = "hellotopic"
-message = "hello world"
 
-with xmlrpc.client.ServerProxy("http://localhost:8088/") as proxy:
+topic = "testtopic"
+poster = "myposter"
+messageText = "my message"
+messageObj = MessageModule.Message(topic, poster, messageText)
+
+with xmlrpc.client.ServerProxy(xmlrpcUrl) as proxy:
     srv = proxy.LindaDistributed
-    print("write: %s" % str(srv._out(topic, "hellomessage")))
+    print("write: %s" % str(srv._out(topic, poster, messageText)))
     print("read: %s" % str(srv._rd(topic)))
     print("take: %s" % str(srv._in(topic)))
 

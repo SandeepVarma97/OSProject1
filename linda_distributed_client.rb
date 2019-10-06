@@ -1,10 +1,16 @@
 # clear;ruby linda_distributed_client.rb
 
 require "./LindaDistributed"
+require "./Message"
 
 include LindaDistributed
 
-client = Client.new(Common.Url)
-puts client.sendMessage(:write, "testtopic", "my message")
-puts client.sendMessage(:read, "testtopic", nil)
+topic = "testtopic"
+poster = "myposter"
+messageText = "my message"
+messageObject = Message.new(topic, poster, messageText)
 
+client = Client.new(Common.Url)
+puts client.sendMessage(:write, topic, messageObject)
+puts client.sendMessage(:read, topic, nil)
+puts client.sendMessage(:take, topic, nil)
