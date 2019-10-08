@@ -2,12 +2,16 @@
 require "rinda/tuplespace"
 require "rinda/rinda"
 require "./Message"
+require "./TopicMessage"
 
 module LindaDistributed
     class Common
 
         @@Port = 4000
         @@Url = "druby://localhost:#{@@Port}"
+
+        @@TopicPort = 3000
+        @@TopicUrl = "druby://localhost:#{@@TopicPort}"
 
         @OList = [:read, :write, :take]
         @@OperationLookup = { 
@@ -64,5 +68,39 @@ module LindaDistributed
             tuple = (method == :write) ? [messageObject.topic, messageObject.poster, messageObject.messageText] : [topic, nil, nil]
         end
 
+    end
+
+    class TopicClient
+        
+        @url = nil
+        @ts = nil
+
+        def initialize(url)
+            @url = url
+            @ts = DRbObject.new(nil, url)
+        end
+
+        def sendMessage(method, messageObject)
+            
+            tuple = toTuple(method, messageObject)
+
+            puts "method: #{method} tuple: #{tuple}"
+
+            retVal = @ts.send(method, tuple)
+        end
+
+        def toTuple(method, messageObject)
+            tuple = (method == :write) ? [@key, messageObject.topicList] : [@key, nil]
+        end
+
+        def getList(topicListString)
+            #topicListString = "Star Wars, Luke, Darth, Yoda"
+            sendMessage(:read, [@key, nil])
+            list = topicListString.split(/, /)
+        end
+
+        def addTopic(topic)
+            
+        end
     end
 end
