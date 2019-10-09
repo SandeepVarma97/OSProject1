@@ -22,7 +22,7 @@ class Converter:
         elif (item == int):
             converted = {'class' : 'Numeric'}
         elif (type(item) == re.Pattern):
-            converted = {'regexp' : item}
+            converted = {'regexp' : item.pattern}
         elif (type(item) == range):
             converted = {'from' : item[0], 'to' : item[len(item)-1]}
         elif (type(item) == dict):

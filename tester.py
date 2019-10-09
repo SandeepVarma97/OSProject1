@@ -1,6 +1,10 @@
 
 import re
+import xmlrpc.client
+
 import ConverterModule
+
+xmlrpcUrl = "http://localhost:8088/"
 
 def evaluate(data):
     expressionConverter = [{'name' : 'tuple', 'pattern' : "^[(].+[)]$",'expressionMatcher' : re.compile("^[(].+[)]$"), 'converter' : convertToTuple}]
@@ -61,4 +65,12 @@ while (doLoop):
     if (stripped == 'exit'):
         break
     expr = evaluate(stripped)
-    print(ConverterModule.Converter.tupleToXMLRPCData(expr))
+    converted = ConverterModule.Converter.tupleToXMLRPCData(expr)
+    print('converted: ', converted)
+
+    try:
+        with xmlrpc.client.ServerProxy(xmlrpcUrl) as proxy:
+            srv = proxy.test
+            print(srv.foo(converted))
+    except Exception as e:
+        print(e)

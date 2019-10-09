@@ -96,6 +96,39 @@ module XMLRPCLinda
         end
     end
 
+    class Server1
+
+        @port = nil
+        @server = nil
+
+        def initialize(port)
+            @port = port
+        end
+
+        def start()
+
+            @server = XMLRPC::Server.new(@port)
+
+            puts "Started At #{Time.now}"
+            serverProcessThread = Thread.new{internalStart()}
+            serverProcessThread.join
+            puts "End at #{Time.now}"
+        end
+
+        def internalStart()
+            addHandlers()
+            @server.serve
+        end
+
+        def addHandlers()
+            
+            @server.add_handler("test.foo") do |data|
+                puts data
+                data
+            end
+        end
+    end
+
     class Client
 
         @host = nil
@@ -130,5 +163,26 @@ module XMLRPCLinda
             messageObject.messageText = "nil" if messageObject.messageText == nil
             messageObject
         end
+    end
+
+    class Client1
+
+        @host = nil
+        @port = nil
+        @proxy = nil
+
+        def initialize(host, port)
+            
+            @host = host
+            @port = port
+            path = Common.Path
+
+            @proxy = XMLRPC::Client.new(@host, path, @port)
+        end
+
+        def sendMessage1(method, topic)
+            @proxy.call(Common.getFullyNamedMethod(method), topic)
+        end
+
     end
 end
