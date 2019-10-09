@@ -5,7 +5,7 @@ class Converter:
     def tupleToXMLRPCData(tupleItem):
         l = list(tupleItem)
         for i in range(len(tupleItem)):
-            l[i] = toXMLRPCData(l[i])
+            l[i] = Converter.toXMLRPCData(l[i])
         
         return tuple(l)
 
@@ -32,3 +32,5 @@ class Converter:
                 converted = item
         else:
             converted = item
+        
+        return converted
