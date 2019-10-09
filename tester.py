@@ -1,23 +1,24 @@
 
 import re
-import Converter
+import ConverterModule
 
 def evaluate(data):
-    expressionConverter = [{'pattern' : "^[(].+[)]$",'expressionMatcher' : re.compile("^[(].+[)]$"), 'converter' : convertToTuple}]
+    expressionConverter = [{'name' : 'tuple', 'pattern' : "^[(].+[)]$",'expressionMatcher' : re.compile("^[(].+[)]$"), 'converter' : convertToTuple}]
     converted = None
 
     for r in expressionConverter:
         if (r['expressionMatcher'].match(data)):
-            print('matched on: ', r['pattern'])
+            print('matched on: ', r['name'])
             converted = r['converter'](data)
             break
 
     return converted
 
 def convertToTuple(data):
-    formatted = re.sub("^[(]", "", data)
-    formatted = re.sub("[)]$", "", formatted)
-    return tuple(map(lambda s: itemMap(s), formatted.split(',')))
+    return eval(data)
+    #formatted = re.sub("^[(]", "", data)
+    #formatted = re.sub("[)]$", "", formatted)
+    #return tuple(map(lambda s: itemMap(s), formatted.split(',')))
 
 def reConverter(t):
     formatted = t.replace('re.compile(', '')
@@ -59,4 +60,5 @@ while (doLoop):
     stripped = data.strip()
     if (stripped == 'exit'):
         break
-    print(evaluate(stripped))
+    expr = evaluate(stripped)
+    print(ConverterModule.Converter.tupleToXMLRPCData(expr))
