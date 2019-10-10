@@ -70,7 +70,7 @@ module LindaDistributed
 
     end
 
-    class TopicClient
+    class Client1
         
         @url = nil
         @ts = nil
@@ -80,27 +80,9 @@ module LindaDistributed
             @ts = DRbObject.new(nil, url)
         end
 
-        def sendMessage(method, messageObject)
-            
-            tuple = toTuple(method, messageObject)
-
-            puts "method: #{method} tuple: #{tuple}"
-
-            retVal = @ts.send(method, tuple)
-        end
-
-        def toTuple(method, messageObject)
-            tuple = (method == :write) ? [@key, messageObject.topicList] : [@key, nil]
-        end
-
-        def getList(topicListString)
-            #topicListString = "Star Wars, Luke, Darth, Yoda"
-            sendMessage(:read, [@key, nil])
-            list = topicListString.split(/, /)
-        end
-
-        def addTopic(topic)
-            
+        def send(method, t)
+            puts "method: #{method} tuple: #{t}"
+            @ts.send(method, t)
         end
     end
 end

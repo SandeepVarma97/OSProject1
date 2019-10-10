@@ -7,7 +7,7 @@ import MessageModule
 xmlrpcUrl = "http://localhost:8088/"
 
 topic = "testtopic"
-poster = "myposter"
+poster = "myposter2"
 messageText = "my message"
 messageObj = MessageModule.Message(topic, poster, messageText)
 

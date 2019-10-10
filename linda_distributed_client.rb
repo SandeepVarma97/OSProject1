@@ -6,7 +6,7 @@ require "./Message"
 include LindaDistributed
 
 topic = "testtopic"
-poster = "myposter"
+poster = "myposter1"
 messageText = "my message"
 messageObject = Message.new(topic, poster, messageText)
 

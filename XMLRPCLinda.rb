@@ -111,7 +111,7 @@ module XMLRPCLinda
         def start()
 
             @server = XMLRPC::Server.new(@port)
-            @lindaClient = LindaDistributed::Client.new(@lindaUrl)
+            @lindaClient = LindaDistributed::Client1.new(@lindaUrl)
             
             puts "Started At #{Time.now}"
             serverProcessThread = Thread.new{internalStart()}
@@ -126,18 +126,25 @@ module XMLRPCLinda
 
         def addHandlers()
             
-            @server.add_handler("test._in") do |data|
-                puts data
-                data
+            @server.add_handler(Common.getFullyNamedMethod(:take)) do |t|
+                method = getMethodInfo(:take)
+                output = @lindaClient.send(method[:val], t)
+                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
             end
-            @server.add_handler("test._rd") do |data|
-                puts data
-                data
+            @server.add_handler(Common.getFullyNamedMethod(:read)) do |t|
+                method = getMethodInfo(:read)
+                output = @lindaClient.send(method[:val], t)
+                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
             end
-            @server.add_handler("test._out") do |data|
-                puts data
-                data
+            @server.add_handler(Common.getFullyNamedMethod(:write)) do |t|
+                method = getMethodInfo(:write)
+                output = @lindaClient.send(method[:val], t)
+                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
             end
+        end
+
+        def getMethodInfo(m)
+            {:key => m.to_s, :val => m, m => Common.getFullyNamedMethod(m)}
         end
     end
 
@@ -192,8 +199,8 @@ module XMLRPCLinda
             @proxy = XMLRPC::Client.new(@host, path, @port)
         end
 
-        def sendMessage1(method, topic)
-            @proxy.call(Common.getFullyNamedMethod(method), topic)
+        def sendMessage(method, tuple)
+            @proxy.call(method, tuple)
         end
 
     end

@@ -6,7 +6,7 @@ require "./XMLRPCLinda"
 include XMLRPCLinda
 
 topic = "testtopic"
-poster = "myposter"
+poster = "myposter3"
 messageText = "my message"
 messageObject = Message.new(topic, poster, messageText)
 
