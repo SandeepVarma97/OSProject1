@@ -2,6 +2,7 @@
 require "xmlrpc/server"
 require 'xmlrpc/client'
 require "./LindaDistributed"
+require "./ConverterModule"
 
 module XMLRPCLinda
     class Common
@@ -127,24 +128,25 @@ module XMLRPCLinda
         def addHandlers()
             
             @server.add_handler(Common.getFullyNamedMethod(:take)) do |t|
-                method = getMethodInfo(:take)
-                output = @lindaClient.send(method[:val], t)
-                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
+                process(:take, t)
             end
             @server.add_handler(Common.getFullyNamedMethod(:read)) do |t|
-                method = getMethodInfo(:read)
-                output = @lindaClient.send(method[:val], t)
-                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
+                process(:read, t)
             end
             @server.add_handler(Common.getFullyNamedMethod(:write)) do |t|
-                method = getMethodInfo(:write)
-                output = @lindaClient.send(method[:val], t)
-                { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
+                process(:write, t)
             end
         end
 
         def getMethodInfo(m)
             {:key => m.to_s, :val => m, m => Common.getFullyNamedMethod(m)}
+        end
+
+        def process(m, t)
+            method = getMethodInfo(m)
+            converted = ConverterModule::Converter.xmlRPCTupleToTuple(t)
+            output = @lindaClient.send(method[:val], converted)
+            { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
         end
     end
 
