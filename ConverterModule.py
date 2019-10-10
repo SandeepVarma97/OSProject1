@@ -24,7 +24,7 @@ class Converter:
         elif (type(item) == re.Pattern):
             converted = {'regexp' : item.pattern}
         elif (type(item) == range):
-            converted = {'from' : item[0], 'to' : item[len(item)-1]}
+            converted = {'from' : item[0], 'to' : item[len(item)-1]+1}
         elif (type(item) == dict):
             if ('symbol' in item):
                 converted = item

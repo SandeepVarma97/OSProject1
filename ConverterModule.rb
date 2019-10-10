@@ -34,8 +34,6 @@ module ConverterModule
         def self.getName(hash)
             keys = hash.keys
             name  = nil
-
-            puts keys
             
             if (keys.include? 'class')
                 name = 'class'                
@@ -48,8 +46,7 @@ module ConverterModule
             else
                 name = 'symbol'
             end
-            
-            puts 'converted name: ' + name
+
             name
         end
 
@@ -63,9 +60,9 @@ module ConverterModule
             elsif (name == 'range')
                 converted = Range.new(item['from'], item['to'])
             elsif (name == 'symbol')
-                converted = item.to_sym()
+                converted = :"#{converted['symbol']}"
             else
-                converted = item.to_sym()
+                converted = :"#{converted}"
             end
 
             converted

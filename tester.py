@@ -57,6 +57,8 @@ def itemMap(item):
     
     return converted
 
+# test
+# ( 1, 'test', str, int, range(3, 14), re.compile("^[-=*/]$"), {'symbol' : 'chopstick' }, None )
 doLoop = True
 while (doLoop):
     data = input('Expression: ')
@@ -65,8 +67,8 @@ while (doLoop):
     if (stripped == 'exit'):
         break
     expr = evaluate(stripped)
+    print(expr)
     converted = ConverterModule.Converter.tupleToXMLRPCTuple(expr)
-    print('converted: ', converted)
 
     try:
         with xmlrpc.client.ServerProxy(xmlrpcUrl, allow_none=True) as proxy:
