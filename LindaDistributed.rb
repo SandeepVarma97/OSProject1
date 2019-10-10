@@ -2,7 +2,6 @@
 require "rinda/tuplespace"
 require "rinda/rinda"
 require "./Message"
-require "./TopicMessage"
 
 module LindaDistributed
     class Common

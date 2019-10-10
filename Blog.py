@@ -1,25 +1,5 @@
 
-import re
-import xmlrpc.client
+import DistributedOperation
 
-import ConverterModule
-
-class Blog:
-
-    xmlrpcUrl = "http://localhost:8088/"
-
-    def __init__(self):
-        with xmlrpc.client.ServerProxy(Blog.xmlrpcUrl, allow_none=True) as proxy:
-            self.srv = proxy.LindaDistributed
-
-    def _in(self, t):
-        converted = ConverterModule.Converter.tupleToXMLRPCTuple(t)
-        return self.srv._in(converted)
-
-    def _rd(self, t):
-        converted = ConverterModule.Converter.tupleToXMLRPCTuple(t)
-        return self.srv._rd(converted)
-
-    def _out(self, t):
-        converted = ConverterModule.Converter.tupleToXMLRPCTuple(t)
-        return self.srv._out(converted)
+class Blog(DistributedOperation.DistributedOperation):
+    pass

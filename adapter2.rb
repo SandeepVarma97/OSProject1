@@ -1,6 +1,4 @@
-# clear;ruby adapter1.rb
-
-require 'xmlrpc/server'
+# clear;ruby adapter2.rb
 
 require "./XMLRPCLinda"
 require "./LindaDistributed"
@@ -16,5 +14,5 @@ suppress_warnings do
     XMLRPC::Config::ENABLE_NIL_CREATE = true
 end
 
-server = XMLRPCLinda::Server1.new(XMLRPCLinda::Common.Port, LindaDistributed::Common.Url)
+server = XMLRPCLinda::Server.new(XMLRPCLinda::Common.Port, LindaDistributed::Common.Url)
 server.start()

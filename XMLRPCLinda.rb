@@ -146,7 +146,12 @@ module XMLRPCLinda
             method = getMethodInfo(m)
             converted = ConverterModule::Converter.xmlRPCTupleToTuple(t)
             output = @lindaClient.send(method[:val], converted)
-            { "status" => true, "context" => {"method" => method, "input" => t}, "output": output.to_s }
+
+            if (!output.is_a?(Module.const_get('Array')))
+                output = output.to_s
+            end
+
+            { "status" => true, "context" => {"method" => method, "input" => t}, "output": output }
         end
     end
 
