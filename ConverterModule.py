@@ -2,15 +2,15 @@ import re
 
 class Converter:
     @staticmethod
-    def tupleToXMLRPCData(tupleItem):
+    def tupleToXMLRPCTuple(tupleItem):
         l = list(tupleItem)
         for i in range(len(tupleItem)):
-            l[i] = Converter.toXMLRPCData(l[i])
+            l[i] = Converter.itemToXMLRPCItem(l[i])
         
         return tuple(l)
 
     @staticmethod
-    def toXMLRPCData(item):
+    def itemToXMLRPCItem(item):
         converted = item
 
         if (type(item) == str):

@@ -65,11 +65,11 @@ while (doLoop):
     if (stripped == 'exit'):
         break
     expr = evaluate(stripped)
-    converted = ConverterModule.Converter.tupleToXMLRPCData(expr)
+    converted = ConverterModule.Converter.tupleToXMLRPCTuple(expr)
     print('converted: ', converted)
 
     try:
-        with xmlrpc.client.ServerProxy(xmlrpcUrl) as proxy:
+        with xmlrpc.client.ServerProxy(xmlrpcUrl, allow_none=True) as proxy:
             srv = proxy.test
             print(srv.foo(converted))
     except Exception as e:

@@ -100,15 +100,19 @@ module XMLRPCLinda
 
         @port = nil
         @server = nil
+        @lindaUrl = nil
+        @lindaClient = nil
 
-        def initialize(port)
+        def initialize(port, lindaUrl)
             @port = port
+            @lindaUrl = lindaUrl
         end
 
         def start()
 
             @server = XMLRPC::Server.new(@port)
-
+            @lindaClient = LindaDistributed::Client.new(@lindaUrl)
+            
             puts "Started At #{Time.now}"
             serverProcessThread = Thread.new{internalStart()}
             serverProcessThread.join
@@ -122,7 +126,15 @@ module XMLRPCLinda
 
         def addHandlers()
             
-            @server.add_handler("test.foo") do |data|
+            @server.add_handler("test._in") do |data|
+                puts data
+                data
+            end
+            @server.add_handler("test._rd") do |data|
+                puts data
+                data
+            end
+            @server.add_handler("test._out") do |data|
                 puts data
                 data
             end
