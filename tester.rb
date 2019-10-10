@@ -1,6 +1,9 @@
 
 require "./ConverterModule"
 
+# test
+# [ { "regexp" => "^[-+/*]$" }, 1, "tester", { 'from' => ​1, 'to' => ​23}, { 'class' => 'String' }​, { 'class' => 'Numeric' }, { 'symbol' => 'chopstick' } ]
+
 loop do
     print "Expression: "
     $stdout.flush

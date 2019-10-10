@@ -6,6 +6,8 @@ module ConverterModule
             for i in xmlRPCTuple
                 convertedList.push(xmlRPCItemToItem(i))
             end
+
+            convertedList
         end
 
         def self.xmlRPCItemToItem(xmlRPCItem)
@@ -25,12 +27,16 @@ module ConverterModule
             else
                 converted = xmlRPCItem
             end
+
+            converted
         end
 
         def self.getName(hash)
             keys = hash.keys
             name  = nil
 
+            puts keys
+            
             if (keys.include? 'class')
                 name = 'class'                
             elsif (keys.include? 'regexp')
@@ -42,7 +48,8 @@ module ConverterModule
             else
                 name = 'symbol'
             end
-
+            
+            puts 'converted name: ' + name
             name
         end
 
