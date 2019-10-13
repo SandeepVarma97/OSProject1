@@ -18,13 +18,17 @@ end
 
 blog = Blog.new()
 
-# t1 = blog._rd(("bob","distsys",str))
+t1 = blog._rd(("bob","distsys",str))
+puts(t1)
 
-# t2 = blog._rd(("alice","gtcn",str))
+t2 = blog._rd(("alice","gtcn",str))
+puts(t2)
+
 poster = "alice"
 topic = "gtcn"
 messageText = nil
 t = [poster, topic, messageText]
 puts blog._rd(t)
 
-# t3 = blog._rd(("bob","gtcn",str))
+t3 = blog._rd(("bob","gtcn",str))
+puts(t1)
